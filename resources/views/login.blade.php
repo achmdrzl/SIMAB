@@ -41,7 +41,7 @@ Contact: contact@hencework.com
                                             <div class="text-center mb-7">
                                                 <a class="navbar-brand me-0" href="index.html">
                                                     <img class="brand-img d-inline-block"
-                                                        src="{{ asset('backend/dist/img/logo-light.png') }}"
+                                                        src="{{ asset('backend/dist/img/cvsurya.svg') }}"
                                                         alt="brand">
                                                 </a>
                                             </div>

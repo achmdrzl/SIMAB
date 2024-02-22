@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('alat_id');
             $table->string('alat_kode');
             $table->string('alat_nama');
+            $table->text('alat_kondisi');
             $table->integer('alat_jml')->default(1)->nullable();
             $table->enum('status', ['aktif', 'non-aktif'])->default('aktif');
             $table->timestamps();

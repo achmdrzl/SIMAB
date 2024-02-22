@@ -27,7 +27,64 @@
             <!-- /Page Header -->
 
             <!-- Page Body -->
-
+            <div class="hk-pg-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="data_order">
+                            <div class="row">
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-6 mb-md-4 mb-3">
+                                        <div class="card card-border mb-0 h-100">
+                                            <div class="card-header card-header-action">
+                                                <h6>Total Surat Jalan
+                                                </h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="col-md-12">
+                                                    <h1 id="pendingOrder">{{ $suratjalan }} </h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-md-4 mb-3">
+                                        <div class="card card-border mb-0 h-100">
+                                            <div class="card-header card-header-action">
+                                                <h6>Total Surat Jalan Kembali
+                                                </h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <h1 id="settleOrder">{{ $suratjalanKembali }}</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-md-4 mb-3">
+                                        <div class="card card-border mb-0 h-100">
+                                            <div class="card-header card-header-action">
+                                                <h6>Total Proyek</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <h1 id="totalOrder">{{ $proyek }}</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-md-4 mb-3">
+                                        <div class="card card-border mb-0 h-100">
+                                            <div class="card-header card-header-action">
+                                                <h6>Total Proyek Selesai</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <h1 id="totalOrder">{{ $proyekSelesai }}</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /Page Body -->
+                </div>
             <!-- /Page Body -->
         </div>
 

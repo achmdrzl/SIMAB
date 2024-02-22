@@ -5,26 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Alat extends Model
+class Proyek extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'alat_id';
+    protected $primaryKey = 'proyek_id';
     public $incrementing = true;
     public $timestamps = true;
 
     protected $fillable =
     [
-        'alat_id',
-        'alat_kode',
-        'alat_nama',
-        'alat_kondisi',
-        'alat_jml',
+        'proyek_nama',
+        'proyek_pelaksana',
+        'proyek_lokasi',
+        'proyek_pic',
+        'fk_user',
         'status'
     ];
 
-    public function suratdetail()
+    public function surat()
     {
-        return $this->hasOne(SuratJalanDetail::class, 'alat_id');
+        $this->hasMany(SuratJalan::class, 'proyek_id');
     }
 }

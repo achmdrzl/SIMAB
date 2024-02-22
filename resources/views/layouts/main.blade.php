@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BINTANG KENCANA - MANAGEMENT</title>
+    <title>CV SURYA PRIMA MANDIRI - MANAGEMENT</title>
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta name="description" content="SIPEMAS" />
 
@@ -50,10 +50,10 @@
                 <div class="nav-start-wrap flex-fill">
                     <!-- Brand -->
                     <a class="navbar-brand d-xl-flex d-none flex-shrink-0" href="{{ route('dashboard.index') }}">
-                        <img class="brand-img img-fluid" src="{{ asset('backend/dist/img/bintangkencana.svg') }}"
+                        <img class="brand-img img-fluid" src="{{ asset('backend/dist/img/cvsurya.svg') }}"
                             alt="brand" />
-                        <img class="brand-img img-fluid" src="{{ asset('backend/dist/img/bintangkencana3.svg') }}"
-                            style="margin-top: 5px;" alt="brand" />
+                        {{-- <img class="brand-img img-fluid" src="{{ asset('backend/dist/img/bintangkencana3.svg') }}"
+                            style="margin-top: 5px;" alt="brand" /> --}}
                     </a>
                     <!-- /Brand -->
                     <button
@@ -68,10 +68,10 @@
                             <span>
                                 <a class="navbar-brand" href="{{ route('dashboard.index') }}">
                                     <img class="brand-img img-fluid"
-                                        src="{{ asset('backend/dist/img/bintangkencana.svg') }}" alt="brand" />
-                                    <img class="brand-img img-fluid"
+                                        src="{{ asset('backend/dist/img/cvsurya.svg') }}" alt="brand" />
+                                    {{-- <img class="brand-img img-fluid"
                                         src="{{ asset('backend/dist/img/bintangkencana3.svg') }}"
-                                        style="margin-top: 5px;" alt="brand" />
+                                        style="margin-top: 5px;" alt="brand" /> --}}
                                 </a>
                                 <button class="btn btn-icon btn-rounded btn-flush-dark flush-soft-hover navbar-toggle">
                                     <span class="icon">

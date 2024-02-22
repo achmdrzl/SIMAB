@@ -9,8 +9,8 @@
                 <div class="d-flex">
                     <div class="d-flex flex-wrap justify-content-between flex-1">
                         <div class="mb-lg-0 mb-2 me-8">
-                            <h1 class="pg-title">Data User</h1>
-                            <p>Management Pengelolaan Data User</p>
+                            <h1 class="pg-title">Data Alat</h1>
+                            <p>Management Pengelolaan Data Alat</p>
                         </div>
                     </div>
                 </div>
@@ -25,27 +25,27 @@
                             <div class="col-md-12 mb-md-4 mb-3">
                                 <div class="card card-border mb-0 h-100">
                                     <div class="card-header card-header-action">
-                                        <h6>List Data User
-                                            <span class="badge badge-sm badge-light ms-1">{{ count($users) }}</span>
+                                        <h6>List Data Alat
+                                            <span class="badge badge-sm badge-light ms-1">{{ count($alats) }}</span>
                                         </h6>
                                         <div class="card-action-wrap">
-                                            <button class="btn btn-sm btn-primary ms-3" id="user-create"><span><span
+                                            <button class="btn btn-sm btn-primary ms-3" id="alat-create"><span><span
                                                         class="icon"><span class="feather-icon"><i
                                                                 data-feather="plus"></i></span></span><span
                                                         class="btn-text">Tambah
-                                                        User</span></span></button>
+                                                        Alat</span></span></button>
                                         </div>
                                     </div>
                                     <div class="card-body">
                                         <div class="contact-list-view">
-                                            <table id="datatable_7" class="table nowrap datatableUser table-striped">
+                                            <table id="datatable_7" class="table datatableUser table-striped">
                                                 <thead>
                                                     <tr>
                                                         <th>No</th>
-                                                        <th>Nama</th>
-                                                        <th>Email</th>
-                                                        <th>Role</th>
-                                                        <th>Phone Number</th>
+                                                        <th>Kode Alat</th>
+                                                        <th>Nama Alat</th>
+                                                        <th>Jumlah</th>
+                                                        <th>Kondisi</th>
                                                         <th>Status</th>
                                                         <th>Action</th>
                                                     </tr>
@@ -62,12 +62,12 @@
             <!-- /Page Body -->
 
             {{-- Modal User --}}
-            <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="modalSupplier"
+            <div class="modal fade" id="alatModal" tabindex="-1" role="dialog" aria-labelledby="modalSupplier"
                 aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h6 class="modal-title" id="userHeading"></h6>
+                            <h6 class="modal-title" id="alatHeading"></h6>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
@@ -76,84 +76,34 @@
                             <div class="alert alert-danger alert-dismissible fade show" role="alert"
                                 style="display: none;" style="color: red">
                             </div>
-                            <form id="userForm">
+                            <form id="alatForm">
                                 <div class="row gx-3">
-                                    <input type="hidden" id="user_id" name="user_id">
+                                    <input type="hidden" id="alat_id" name="alat_id">
                                     <div class="col-sm-12">
-                                        <label class="form-label">Name</label>
+                                        <label class="form-label">Nama Alat</label>
                                         <div class="form-group">
                                             <input class="form-control" type="text" placeholder="Masukkan Nama"
-                                                name="name" id="name" />
+                                                name="alat_nama" id="alat_nama" />
                                         </div>
-                                        <label class="form-label">Email</label>
+                                        <label class="form-label">Jumlah</label>
                                         <div class="form-group">
-                                            <input class="form-control" type="email" value=""
-                                                placeholder="Masukkan Email" name="email" id="email" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row gx-3">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="form-label">Phone Number</label>
-                                            <input class="form-control" type="number"
-                                                placeholder="Masukkan Nomor Handphone" name="phone_number"
-                                                id="phone_number" />
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="form-label">Position</label>
-                                            <select class="form-select" id="role" name="role">
-                                                <option selected disabled>--</option>
-                                                <option value="pimpinan">Pimpinan</option>
-                                                <option value="admin">Admin</option>
-                                                <option value="pengawas-lapangan">Pengawas Lapangan</option>
-                                            </select>
+                                            <input class="form-control" type="number" value=""
+                                                placeholder="Masukkan Jumlah Alat" name="alat_jml" id="alat_jml" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row gx-3">
                                     <div class="col-sm-12">
-                                        <label class="form-label">Password</label>
+                                        <label class="form-label">Kondisi Alat</label>
                                         <div class="form-group">
-                                            <div class="input-group password-check">
-                                                <span class="input-affix-wrapper">
-                                                    <input class="form-control" placeholder="Masukkan Password"
-                                                        type="password" id="password" name="password" required
-                                                        autocomplete="current-password">
-                                                    <a href="#" class="input-suffix text-muted">
-                                                        <span class="feather-icon"><i class="form-icon"
-                                                                data-feather="eye"></i></span>
-                                                        <span class="feather-icon d-none"><i class="form-icon"
-                                                                data-feather="eye-off"></i></span>
-                                                    </a>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <label class="form-label">Password Confirmation</label>
-                                        <div class="form-group">
-                                            <div class="input-group password-check">
-                                                <span class="input-affix-wrapper">
-                                                    <input class="form-control" placeholder="Masukkan Konfirmasi Password"
-                                                        type="password" id="password_confirmation"
-                                                        name="password_confirmation" required
-                                                        autocomplete="current-password">
-                                                    <a href="#" class="input-suffix text-muted">
-                                                        <span class="feather-icon"><i class="form-icon"
-                                                                data-feather="eye"></i></span>
-                                                        <span class="feather-icon d-none"><i class="form-icon"
-                                                                data-feather="eye-off"></i></span>
-                                                    </a>
-                                                </span>
-                                            </div>
+                                            <textarea name="alat_kondisi" id="alat_kondisi" class="form-control"></textarea>
                                         </div>
                                     </div>
                                 </div>
                         </div>
                         <div class="modal-footer align-items-center">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-primary" id="submitUser">Simpan</button>
+                            <button type="button" class="btn btn-primary" id="submitAlat">Simpan</button>
                         </div>
                         </form>
                     </div>
@@ -198,26 +148,26 @@
                 },
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('user.index') }}",
+                ajax: "{{ route('alat.index') }}",
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex'
                     },
                     {
-                        data: 'name',
-                        name: 'name'
+                        data: 'alat_kode',
+                        name: 'alat_kode'
                     },
                     {
-                        data: 'email',
-                        name: 'email'
+                        data: 'alat_nama',
+                        name: 'alat_nama'
                     },
                     {
-                        data: 'role',
-                        name: 'role'
+                        data: 'alat_jml',
+                        name: 'alat_jml'
                     },
                     {
-                        data: 'phone_number',
-                        name: 'phone_number'
+                        data: 'alat_kondisi',
+                        name: 'alat_kondisi'
                     },
                     {
                         data: 'status',
@@ -231,21 +181,21 @@
             });
 
             // Create Data User.
-            $('#user-create').click(function() {
+            $('#alat-create').click(function() {
                 $('.alert').hide();
                 $('#saveBtn').val("create-user");
-                $('#user_id').val('');
-                $('#userForm').trigger("reset");
-                $('#userHeading').html("TAMBAH DATA USER BARU");
-                $('#userModal').modal('show');
+                $('#alat_id').val('');
+                $('#alatForm').trigger("reset");
+                $('#alatHeading').html("TAMBAH DATA ALAT BARU");
+                $('#alatModal').modal('show');
             });
 
-            $('#submitUser').click(function(e) {
+            $('#submitAlat').click(function(e) {
                 e.preventDefault();
                 $(this).html('Sending..');
 
                 $.ajax({
-                    url: "{{ route('user.store') }}",
+                    url: "{{ route('alat.store') }}",
                     data: new FormData(this.form),
                     cache: false,
                     processData: false,
@@ -261,7 +211,7 @@
                                 $('.alert-danger').append('<strong><li>' + value +
                                     '</li></strong>');
                             });
-                            $('#submitUser').html('Simpan');
+                            $('#submitAlat').html('Simpan');
 
                         } else {
                             $('.btn-warning').hide();
@@ -279,9 +229,9 @@
                                 title: `${response.message}`,
                             })
 
-                            $('#userForm').trigger("reset");
-                            $('#submitUser').html('Simpan');
-                            $('#userModal').modal('hide');
+                            $('#alatForm').trigger("reset");
+                            $('#submitAlat').html('Simpan');
+                            $('#alatModal').modal('hide');
 
                             datatable.draw();
                         }
@@ -290,35 +240,32 @@
             });
 
             // Edit Data User
-            $('body').on('click', '#user-edit', function() {
-                var user_id = $(this).attr('data-id');
+            $('body').on('click', '#alat-edit', function() {
+                var alat_id = $(this).attr('data-id');
                 $('.alert').hide();
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('user.edit') }}",
+                    url: "{{ route('alat.edit') }}",
                     data: {
-                        user_id: user_id
+                        alat_id: alat_id
                     },
                     dataType: "json",
                     success: function(response) {
                         console.log(response)
-                        $('#submitBtnUser').val("user-edit");
-                        $('#userForm').trigger("reset");
-                        $('#userHeading').html("EDIT DATA USER");
-                        $('#userModal').modal('show');
-                        $('#user_id').val(response.user_id);
-                        $('#name').val(response.name);
-                        $('#email').val(response.email);
-                        $('#phone_number').val(response.phone_number);
-                        $('#role').val(response.role);
-                        $('#password').val('');
-                        $('#password_confirmation').val('');
+                        $('#submitBtnUser').val("alat-edit");
+                        $('#alatForm').trigger("reset");
+                        $('#alatHeading').html("EDIT DATA ALAT");
+                        $('#alatModal').modal('show');
+                        $('#alat_id').val(response.alat_id);
+                        $('#alat_nama').val(response.alat_nama);
+                        $('#alat_kondisi').val(response.alat_kondisi);
+                        $('#alat_jml').val(response.alat_jml);
                     }
                 });
             });
 
             // Arsipkan Data User
-            $('body').on('click', '#user-delete', function() {
+            $('body').on('click', '#alat-delete', function() {
 
                 const swalWithBootstrapButtons = Swal.mixin({
                     customClass: {
@@ -329,7 +276,7 @@
 
                 });
 
-                var user_id = $(this).attr('data-id');
+                var alat_id = $(this).attr('data-id');
 
                 swalWithBootstrapButtons
                     .fire({
@@ -346,9 +293,9 @@
                         if (result.value) {
                             $.ajax({
                                 type: "POST",
-                                url: "{{ route('user.destroy') }}",
+                                url: "{{ route('alat.destroy') }}",
                                 data: {
-                                    user_id: user_id,
+                                    alat_id: alat_id,
                                 },
                                 dataType: "json",
                                 success: function(response) {

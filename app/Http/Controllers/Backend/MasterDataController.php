@@ -4,41 +4,35 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Alat;
-use App\Models\Barang;
-use App\Models\Kadar;
-use App\Models\Merk;
-use App\Models\ModelBarang;
-use App\Models\Pabrik;
-use App\Models\Supplier;
-use App\Models\TransaksiHutang;
-use App\Models\TransaksiInOut;
+use App\Models\Proyek;
+use App\Models\SuratJalan;
+use Illuminate\Support\Str;
 use App\Models\User;
-use DateTime;
-use Illuminate\Console\View\Components\Alert;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Validation\Rules;
-use PDO;
-use Termwind\Components\Dd;
 
 class MasterDataController extends Controller
 {
     // INDEX DASHBOARD
     public function index()
     {
-        return view('dashboard');
+        $proyek = Proyek::count();
+        $proyekSelesai = Proyek::where('status', 'selesai')->count();
+
+        $suratjalan = SuratJalan::count();
+        $suratjalanKembali = SuratJalan::where('status', 'selesai')->count();
+
+        return view('dashboard', compact('proyek', 'proyekSelesai', 'suratjalan', 'suratjalanKembali'));
     }
 
     // INDEX USER
     public function userIndex(Request $request)
     {
+        $users   =   User::all();
         if ($request->ajax()) {
-            $users   =   User::where('status', 'aktif')->get();
+            $users   =   User::all();
             return DataTables::of($users)
                 ->addIndexColumn()
                 ->addColumn('name', function ($item) {
@@ -58,25 +52,33 @@ class MasterDataController extends Controller
                     return $item->phone_number;
                 })
                 ->addColumn('status', function ($item) {
-                    if($item->status == 'aktif'){
-                        $status = '<div class="bagde bg-success">Aktif</div>';
-                    }else{
-                        $status = '<div class="bagde bg-danger">Non-Aktif</div>';
+                    if ($item->status == 'aktif') {
+                        $status = '<div class="badge badge-success">Aktif</div>';
+                    } else {
+                        $status = '<div class="badge badge-danger">Non-Aktif</div>';
                     }
                     return $status;
                 })
                 ->addColumn('action', function ($item) {
 
+                    if ($item->status == 'aktif') {
+                        $class = 'danger';
+                        $icon = 'visibility_off';
+                    } else {
+                        $class = 'success';
+                        $icon = 'visibility';
+                    }
+
                     $btn = '<button class="btn btn-icon btn-primary btn-rounded flush-soft-hover me-1" id="user-edit" data-id="' . $item->user_id . '"><span class="material-icons btn-sm">edit</span></button>';
 
-                    $btn = $btn . '<button class="btn btn-icon btn-danger btn-rounded flush-soft-hover me-1" id="user-delete" data-id="' . $item->user_id . '"><span class="material-icons btn-sm">visibility_off</span></button>';
+                    $btn = $btn . '<button class="btn btn-icon btn-' . $class . ' btn-rounded flush-soft-hover me-1" id="user-delete" data-id="' . $item->user_id . '"><span class="material-icons btn-sm">' . $icon . '</span></button>';
 
                     return $btn;
                 })
                 ->rawColumns(['status', 'action'])
                 ->make(true);
         }
-        return view('masterdata.data-user');
+        return view('masterdata.data-user', compact('users'));
     }
 
     // USER STORED DATA
@@ -92,12 +94,12 @@ class MasterDataController extends Controller
             'password' => 'required|min:8',
             'password_confirmation' => 'required_with:password|same:password'
         ], [
-            'name.required' => 'Name Must Be Included!',
-            'email.required' => 'Email Must Be Included!',
-            'phone_number.required' => 'Phone Number Must Be Included!',
-            'role.required' => 'Position Must Be Included',
-            'password' => 'Password Must be at least 8 Characters',
-            'password_confirmation' => 'Password Confirmation Must be at least 8 Characters',
+            'name.required' => 'Name Harus di Isi!',
+            'email.required' => 'Email Harus di Isi!',
+            'phone_number.required' => 'Phone Number Harus di Isi!',
+            'role.required' => 'Position Harus di Isi',
+            'password' => 'Password Harus minimal 8 Karakter',
+            'password_confirmation' => 'Password Confirmation Harus minimal 8 Karakter',
         ]);
 
         //check if validation fails
@@ -135,7 +137,17 @@ class MasterDataController extends Controller
     // USER DELETE DATA
     public function userDestroy(Request $request)
     {
-        $user = User::find($request->user_id)->delete();
+        $user = User::find($request->user_id);
+
+        if ($user->status == 'aktif') {
+            $user->update([
+                'status'    => 'non-aktif',
+            ]);
+        } else {
+            $user->update([
+                'status'    => 'aktif',
+            ]);
+        }
 
         return response()->json(['status' => 'Data Deleted Successfully!']);
     }
@@ -148,34 +160,46 @@ class MasterDataController extends Controller
             $alats      =   Alat::all();
             return DataTables::of($alats)
                 ->addIndexColumn()
-                ->addColumn('name', function ($item) {
-                    return ucfirst($item->name);
+                ->addColumn('alat_kode', function ($item) {
+                    return ucfirst($item->alat_kode);
                 })
-                ->addColumn('email', function ($item) {
-                    return $item->email;
+                ->addColumn('alat_nama', function ($item) {
+                    return ucfirst($item->alat_nama);
                 })
-                ->addColumn('role', function ($item) {
-                    if ($item->role == 'user') {
-                        return ucfirst('kasir');
+                ->addColumn('alat_kondisi', function ($item) {
+                    return $item->alat_kondisi;
+                })
+                ->addColumn('alat_jumlah', function ($item) {
+                    return $item->alat_jumlah . 'bh';
+                })
+                ->addColumn('status', function ($item) {
+                    if ($item->status == 'aktif') {
+                        $status = '<div class="badge badge-success">Aktif</div>';
                     } else {
-                        return ucfirst($item->role);
+                        $status = '<div class="badge badge-danger">Non-Aktif</div>';
                     }
-                })
-                ->addColumn('phone_number', function ($item) {
-                    return $item->phone_number;
+                    return $status;
                 })
                 ->addColumn('action', function ($item) {
 
-                    $btn = '<button class="btn btn-icon btn-primary btn-rounded flush-soft-hover me-1" id="user-edit" data-id="' . $item->user_id . '"><span class="material-icons btn-sm">edit</span></button>';
+                    if ($item->status == 'aktif') {
+                        $class = 'danger';
+                        $icon = 'visibility_off';
+                    } else {
+                        $class = 'success';
+                        $icon = 'visibility';
+                    }
 
-                    $btn = $btn . '<button class="btn btn-icon btn-danger btn-rounded flush-soft-hover me-1" id="user-delete" data-id="' . $item->user_id . '"><span class="material-icons btn-sm">visibility_off</span></button>';
+                    $btn = '<button class="btn btn-icon btn-primary btn-rounded flush-soft-hover me-1" id="alat-edit" data-id="' . $item->alat_id . '"><span class="material-icons btn-sm">edit</span></button>';
+
+                    $btn = $btn . '<button class="btn btn-icon btn-' . $class . ' btn-rounded flush-soft-hover me-1" id="alat-delete" data-id="' . $item->alat_id . '"><span class="material-icons btn-sm">' . $icon . '</span></button>';
 
                     return $btn;
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['status', 'action'])
                 ->make(true);
         }
-        return view('masterdata.data-user', compact('users'));
+        return view('masterdata.data-alat', compact('alats'));
     }
 
     // ALAT STORED DATA
@@ -183,20 +207,13 @@ class MasterDataController extends Controller
     {
         //define validation rules
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            // 'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
-            'email' => 'required|email',
-            'role' => 'required',
-            'phone_number' => 'required',
-            'password' => 'required|min:8',
-            'password_confirmation' => 'required_with:password|same:password'
+            'alat_nama'     => 'required',
+            'alat_kondisi'  => 'required',
+            'alat_jml'      => 'required',
         ], [
-            'name.required' => 'Name Must Be Included!',
-            'email.required' => 'Email Must Be Included!',
-            'phone_number.required' => 'Phone Number Must Be Included!',
-            'role.required' => 'Position Must Be Included',
-            'password' => 'Password Must be at least 8 Characters',
-            'password_confirmation' => 'Password Confirmation Must be at least 8 Characters',
+            'alat_nama.required'        => 'Nama Alat Harus di Isi!',
+            'alat_kondisi.required'     => 'Alat Kondisi Harus di Isi!',
+            'alat_jml.required'         => 'Jumlah Alat Harus di Isi!',
         ]);
 
         //check if validation fails
@@ -204,18 +221,19 @@ class MasterDataController extends Controller
             return response()->json(['errors' => $validator->errors()->all()]);
         }
 
-        // insert data to table user 
-        $user = User::updateOrCreate([
-            'user_id' => $request->user_id
-        ], [
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone_number' => $request->phone_number,
-            'role' => $request->role,
-            'password' => Hash::make($request->password),
-        ]);
+        $randomInteger = rand(100, 999); // Generate a random integer between 100 and 999
 
-        $user->syncRoles($request->role);
+        $alat_kode = 'ALT-' . $randomInteger;
+
+        // insert data to table alat 
+        $alat = Alat::updateOrCreate([
+            'alat_id' => $request->alat_id
+        ], [
+            'alat_kode'     => $alat_kode,
+            'alat_nama'     => $request->alat_nama,
+            'alat_kondisi'  => $request->alat_kondisi,
+            'alat_jml'      => $request->alat_jml,
+        ]);
 
         //return response
         return response()->json([
@@ -227,16 +245,25 @@ class MasterDataController extends Controller
     // ALAT EDIT DATA
     public function alatEdit(Request $request)
     {
-        $user = User::where('user_id', $request->user_id)->first();
-        return response()->json($user);
+        $alat = Alat::where('alat_id', $request->alat_id)->first();
+        return response()->json($alat);
     }
 
     // ALAT DELETE DATA
     public function alatDestroy(Request $request)
     {
-        $user = User::find($request->user_id)->delete();
+        $alat = Alat::find($request->alat_id);
 
-        return response()->json(['status' => 'Data Deleted Successfully!']);
+        if ($alat->status == 'aktif') {
+            $alat->update([
+                'status'    => 'non-aktif',
+            ]);
+        } else {
+            $alat->update([
+                'status'    => 'aktif',
+            ]);
+        }
+
+        return response()->json(['status' => 'Data Saved Successfully!']);
     }
-
 }
