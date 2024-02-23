@@ -641,8 +641,8 @@
 
                 swalWithBootstrapButtons
                     .fire({
-                        title: "Do you want to update, this data?",
-                        text: "This data will be updated to finish!",
+                        title: "Do you want to print, this data?",
+                        text: "This data will be printed!",
                         icon: "warning",
                         showCancelButton: true,
                         confirmButtonClass: "me-2",

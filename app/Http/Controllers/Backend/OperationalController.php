@@ -20,9 +20,9 @@ class OperationalController extends Controller
     // INDEX PROYEK
     public function proyekIndex(Request $request)
     {
-        $proyeks   =   Proyek::all();
+        $proyeks   =   Proyek::where('status', 'on-progress')->get();
         if ($request->ajax()) {
-            $proyeks      =   Proyek::all();
+            $proyeks      =   Proyek::where('status', 'on-progress')->get();
             return DataTables::of($proyeks)
                 ->addIndexColumn()
                 ->addColumn('proyek_nama', function ($item) {
