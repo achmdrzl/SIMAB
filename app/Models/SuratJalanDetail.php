@@ -18,6 +18,8 @@ class SuratJalanDetail extends Model
         'suratjalan_id',
         'alat_id',
         'alat_jml',
+        'alat_jenis',
+        'alat_platno',
     ];
 
     public function surat()

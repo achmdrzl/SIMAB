@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id('detailsuratjalan_id');
             $table->integer('suratjalan_id')->nullable();
             $table->integer('alat_id')->nullable();
+            $table->string('alat_platno')->nullable();
+            $table->string('alat_jenis')->nullable();
             $table->integer('alat_jml')->nullable();
             $table->timestamps();
         });

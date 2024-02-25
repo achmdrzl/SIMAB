@@ -70,20 +70,39 @@
         <div class="details">
             <table>
                 <tr>
-                    <td>Nama Proyek :</td>
+                    <td>Nama Proyek</td>
+                    <td>:</td>
                     <td><strong>{{ ucfirst($data->proyek->proyek_nama) }}</strong></td>
                 </tr>
                 <tr>
-                    <td>Tanggal :</td>
+                    <td>Tanggal</td>
+                    <td>:</td>
                     <td>{{ date('d M, Y', strtotime($data->suratjalan_tgl)) }}</td>
                 </tr>
                 <tr>
-                    <td>Driver :</td>
+                    <td>Driver</td>
+                    <td>:</td>
                     <td>{{ ucfirst($data->suratjalan_driver) }}</td>
                 </tr>
                 <tr>
-                    <td>Pengawas Lapangan :</td>
+                    <td>Plat No Kendaraan</td>
+                    <td>:</td>
+                    <td>{{ strtoupper($data->suratjalan_platno) }}</td>
+                </tr>
+                <tr>
+                    <td>Jenis Kendaraan</td>
+                    <td>:</td>
+                    <td>{{ strtoupper($data->suratjalan_jenis) }}</td>
+                </tr>
+                <tr>
+                    <td>Pengawas Lapangan</td>
+                    <td>:</td>
                     <td>{{ ucfirst($data->suratjalan_pengawaslapangan) }}</td>
+                </tr>
+                <tr>
+                    <td>Keterangan</td>
+                    <td>:</td>
+                    <td>{{ strtoupper($data->suratjalan_ket) }}</td>
                 </tr>
             </table>
         </div>
@@ -107,6 +126,15 @@
 
         <div class="footer">
             <p>Terima kasih atas kerjasamanya</p>
+
+            <br>
+            <!-- New row for signatures -->
+            <div style="text-align: right;">
+                <p>Surabaya, {{ date('d M Y') }}</p>
+                <br>
+                <br>
+                <p style="text-align:right;">{{ ucfirst($data->suratjalan_pengirim) }}</p>
+            </div>
         </div>
 
     </div>

@@ -20,6 +20,7 @@ class Alat extends Model
         'alat_nama',
         'alat_kondisi',
         'alat_jml',
+        'alat_jenis',
         'status'
     ];
 

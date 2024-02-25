@@ -65,10 +65,10 @@
                     @if(Auth::user()->role === 'admin' || Auth::user()->role === 'pimpinan')
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:void(0);" data-bs-toggle="collapse"
-                            data-bs-target="#operational">
+                            data-bs-target="#laporan">
                             <span class="nav-link-text">Laporan</span>
                         </a>
-                        <ul id="operational" class="nav flex-column collapse nav-children">
+                        <ul id="laporan" class="nav flex-column collapse nav-children">
                             <li class="nav-item">
                                 <ul class="nav flex-column">
                                     {{-- <li class="nav-item {{ request()->segment(1) == 'laporanSuratjalan' ? 'active' : '' }}">

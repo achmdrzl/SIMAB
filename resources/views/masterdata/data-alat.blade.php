@@ -46,6 +46,7 @@
                                                         <th>Nama Alat</th>
                                                         <th>Jumlah</th>
                                                         <th>Kondisi</th>
+                                                        <th>Jenis</th>
                                                         <th>Status</th>
                                                         <th>Action</th>
                                                     </tr>
@@ -84,6 +85,11 @@
                                         <div class="form-group">
                                             <input class="form-control" type="text" placeholder="Masukkan Nama"
                                                 name="alat_nama" id="alat_nama" />
+                                        </div>
+                                        <label class="form-label">Alat Jenis</label>
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" placeholder="Masukkan Nama"
+                                                name="alat_jenis" id="alat_jenis" />
                                         </div>
                                         <label class="form-label">Jumlah</label>
                                         <div class="form-group">
@@ -168,6 +174,10 @@
                     {
                         data: 'alat_kondisi',
                         name: 'alat_kondisi'
+                    },
+                    {
+                        data: 'alat_jenis',
+                        name: 'alat_jenis'
                     },
                     {
                         data: 'status',
@@ -260,6 +270,7 @@
                         $('#alat_nama').val(response.alat_nama);
                         $('#alat_kondisi').val(response.alat_kondisi);
                         $('#alat_jml').val(response.alat_jml);
+                        $('#alat_jenis').val(response.alat_jenis);
                     }
                 });
             });

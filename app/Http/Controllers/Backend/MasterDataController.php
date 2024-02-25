@@ -172,6 +172,9 @@ class MasterDataController extends Controller
                 ->addColumn('alat_jumlah', function ($item) {
                     return $item->alat_jumlah . 'bh';
                 })
+                ->addColumn('alat_jenis', function ($item) {
+                    return ucfirst($item->alat_jenis);
+                })
                 ->addColumn('status', function ($item) {
                     if ($item->status == 'aktif') {
                         $status = '<div class="badge badge-success">Aktif</div>';
@@ -210,10 +213,12 @@ class MasterDataController extends Controller
             'alat_nama'     => 'required',
             'alat_kondisi'  => 'required',
             'alat_jml'      => 'required',
+            'alat_jenis'    => 'required',
         ], [
             'alat_nama.required'        => 'Nama Alat Harus di Isi!',
             'alat_kondisi.required'     => 'Alat Kondisi Harus di Isi!',
             'alat_jml.required'         => 'Jumlah Alat Harus di Isi!',
+            'alat_jenis.required'       => 'Alat Jenis Harus di Isi!',
         ]);
 
         //check if validation fails
@@ -233,6 +238,7 @@ class MasterDataController extends Controller
             'alat_nama'     => $request->alat_nama,
             'alat_kondisi'  => $request->alat_kondisi,
             'alat_jml'      => $request->alat_jml,
+            'alat_jenis'    => $request->alat_jenis,
         ]);
 
         //return response

@@ -16,7 +16,11 @@ return new class extends Migration
             $table->integer('proyek_id')->nullable();
             $table->date('suratjalan_tgl');
             $table->string('suratjalan_driver');
+            $table->string('suratjalan_pengirim');
             $table->string('suratjalan_pengawaslapangan');
+            $table->string('suratjalan_platno');
+            $table->string('suratjalan_jenis');
+            $table->text('suratjalan_ket');
             $table->integer('suratjalan_jmlalat')->nullable();
             $table->enum('status', ['selesai', 'on-progress'])->default('on-progress');
             $table->timestamps();

@@ -194,11 +194,12 @@ class OperationalController extends Controller
             }
             //return response
             return response()->json([
-                'success'   => $alert,
-                'alat_id'   => $alat->alat_id,
-                'alat_nama' => $alat->alat_nama,
-                'alat_jml'  => $request->jml,
-                'message'   => 'Your data has been saved successfully!',
+                'success'       => $alert,
+                'alat_id'       => $alat->alat_id,
+                'alat_nama'     => $alat->alat_nama,
+                'alat_jenis'    => $alat->alat_jenis,
+                'alat_jml'      => $request->jml,
+                'message'       => 'Your data has been saved successfully!',
             ]);
         } else {
             $alert = 'null';
@@ -218,14 +219,20 @@ class OperationalController extends Controller
             'proyek_id'                     => 'required',
             'suratjalan_tgl'                => 'required',
             'suratjalan_driver'             => 'required',
+            'suratjalan_pengirim'           => 'required',
             'suratjalan_pengawaslapangan'   => 'required',
+            'suratjalan_platno'             => 'required',
+            'suratjalan_jenis'              => 'required',
             'alat_id.*'                     => 'required',
             'alat_jml.*'                    => 'required',
         ], [
             'proyek_id.required'                        => 'Proyek Harus di Isi!',
             'suratjalan_tgl.required'                   => 'Tanggal Harus di Isi!',
             'suratjalan_driver.required'                => 'Driver Harus di Isi!',
+            'suratjalan_pengirim.required'              => 'Nama Pengirim Harus di Isi!',
             'suratjalan_pengawaslapangan.required'      => 'Pengawas Lapangan Harus di Isi!',
+            'suratjalan_platno.required'                => 'Plat No Harus di Isi!',
+            'suratjalan_jenis.required'                 => 'Jenis Harus di Isi!',
             'alat_id.*.required'                        => 'Alat Harus di Isi!',
             'alat_jml.*.required'                       => 'Alat Jumlah Harus di Isi!',
         ]);
@@ -241,8 +248,12 @@ class OperationalController extends Controller
         ], [
             'proyek_id'                         => $request->proyek_id,
             'suratjalan_tgl'                    => $request->suratjalan_tgl,
+            'suratjalan_pengirim'               => $request->suratjalan_pengirim,
             'suratjalan_driver'                 => $request->suratjalan_driver,
             'suratjalan_pengawaslapangan'       => $request->suratjalan_pengawaslapangan,
+            'suratjalan_platno'                 => $request->suratjalan_platno,
+            'suratjalan_jenis'                  => $request->suratjalan_jenis,
+            'suratjalan_ket'                    => $request->suratjalan_ket ?? '-',
             'suratjalan_jmlalat'                => array_sum($request->alat_jml),
         ]);
 
@@ -261,8 +272,10 @@ class OperationalController extends Controller
                     'alat_id'       => $request->alat_id[$i],
                 ],
                 [
-                    'alat_id'   => $request->alat_id[$i],
-                    'alat_jml'  => $request->alat_jml[$i] ?? 0,
+                    'alat_id'       => $request->alat_id[$i],
+                    'alat_jml'      => $request->alat_jml[$i] ?? 0,
+                    'alat_jenis'    => $request->alat_jenis[$i] ?? '-',
+                    'alat_platno'   => $request->alat_platno[$i] ?? '-',
                 ]
             );
 

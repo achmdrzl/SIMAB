@@ -77,7 +77,7 @@
                                         <label class="form-label">Proyek</label>
                                         <div class="form-group">
                                             <select class="form-control" name="proyek_id" id="proyek_id">
-                                                <option disabled selected>-- Pilih Proyek --</option>
+                                                <option disabled selected value="-">-- Pilih Proyek --</option>
                                                 @foreach ($proyek as $item)
                                                     <option value="{{ $item->proyek_id }}">{{ ucfirst($item->proyek_nama) }}
                                                     </option>
@@ -89,11 +89,28 @@
                                             <input class="form-control" type="date" placeholder="Masukkan Nama Proyek"
                                                 name="suratjalan_tgl" id="suratjalan_tgl" />
                                         </div>
+                                        <label class="form-label">Pengirim</label>
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" placeholder="Masukkan Nama Proyek"
+                                                name="suratjalan_pengirim" id="suratjalan_pengirim" />
+                                        </div>
                                         <label class="form-label">Driver</label>
                                         <div class="form-group">
                                             <input class="form-control" type="text" value=""
                                                 placeholder="Masukkan Driver Surat Jalan" name="suratjalan_driver"
                                                 id="suratjalan_driver" />
+                                        </div>
+                                        <label class="form-label">Plat No</label>
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" value=""
+                                                placeholder="Masukkan Plat No Pengirim" name="suratjalan_platno"
+                                                id="suratjalan_platno" />
+                                        </div>
+                                        <label class="form-label">Jenis</label>
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" value=""
+                                                placeholder="Masukkan Jenis Pengirim" name="suratjalan_jenis"
+                                                id="suratjalan_jenis" />
                                         </div>
                                     </div>
                                 </div>
@@ -104,6 +121,10 @@
                                             <input class="form-control" type="text"
                                                 placeholder="Masukkan Pengawas Lapangan" name="suratjalan_pengawaslapangan"
                                                 id="suratjalan_pengawaslapangan" />
+                                        </div>
+                                        <label class="form-label">Keterangan</label>
+                                        <div class="form-group">
+                                            <textarea name="suratjalan_ket" id="suratjalan_ket" class="form-control"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -125,6 +146,11 @@
                                             <input class="form-control" type="text" placeholder="Masukkan Jumlah Alat"
                                                 name="jml" id="jml" />
                                         </div>
+                                        {{-- <label class="form-label" id="labelplat">Plat No</label>
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" placeholder="Masukkan Plat Nomor"
+                                                name="plat" id="plat" />
+                                        </div> --}}
                                         <div class="form-group">
                                             <button class="btn btn-success" type="button"
                                                 id="tambahalat">Tambah</button>
@@ -232,7 +258,7 @@
                 ]
             });
 
-            // Edit Data User
+            // Show Data User
             $('body').on('click', '#suratjalan-show', function() {
                 var suratjalan_id = $(this).attr('data-id');
                 $("#daftaralat").html('');
@@ -255,7 +281,11 @@
                         $('#suratjalan_edit').val('show').attr('disabled', true);
                         $('#suratjalan_tgl').val(response.suratjalan_tgl).attr('disabled', true);
                         $('#suratjalan_driver').val(response.suratjalan_driver).attr('disabled', true);
+                        $('#suratjalan_pengirim').val(response.suratjalan_pengirim).attr('disabled', true);
                         $('#suratjalan_pengawaslapangan').val(response.suratjalan_pengawaslapangan).attr('disabled', true);
+                        $('#suratjalan_platno').val(response.suratjalan_platno).attr('disabled', true);
+                        $('#suratjalan_jenis').val(response.suratjalan_jenis).attr('disabled', true);
+                        $('#suratjalan_ket').val(response.suratjalan_ket).attr('disabled', true);
                         $("#alat").attr('hidden', true);
                         $("#jml").attr('hidden', true);
                         $("#labelalat").attr('hidden', true);
@@ -265,10 +295,12 @@
 
                         $.each(response.detailsurat, function(index, value) {
 
-                            const newRowId  = `row_${index}`;
-                            const alat_nama = value['alat']['alat_nama']
-                            const alat_id   = value['alat']['alat_id']
-                            const alat_jml  = value['alat_jml']
+                            const newRowId      = `row_${index}`;
+                            const alat_nama     = value['alat']['alat_nama']
+                            const alat_id       = value['alat']['alat_id']
+                            const alat_jml      = value['alat_jml']
+                            const alat_jenis    = value['alat_jenis']
+                            const alat_platno   = value['alat_platno']
 
                             const newRow = `<tr id="${newRowId}">
                                     <td>

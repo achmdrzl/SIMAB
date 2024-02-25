@@ -18,8 +18,12 @@ class SuratJalan extends Model
         'proyek_id',
         'suratjalan_tgl',
         'suratjalan_driver',
+        'suratjalan_pengirim',
         'suratjalan_pengawaslapangan',
         'suratjalan_jmlalat',
+        'suratjalan_platno',
+        'suratjalan_jenis',
+        'suratjalan_ket',
         'status'
     ];
 

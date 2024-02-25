@@ -84,7 +84,7 @@
                                         <label class="form-label">Proyek</label>
                                         <div class="form-group">
                                             <select class="form-control" name="proyek_id" id="proyek_id">
-                                                <option disabled selected>-- Pilih Proyek --</option>
+                                                <option disabled selected value="-">-- Pilih Proyek --</option>
                                                 @foreach ($proyek as $item)
                                                     <option value="{{ $item->proyek_id }}">{{ ucfirst($item->proyek_nama) }}
                                                     </option>
@@ -96,11 +96,28 @@
                                             <input class="form-control" type="date" placeholder="Masukkan Nama Proyek"
                                                 name="suratjalan_tgl" id="suratjalan_tgl" />
                                         </div>
+                                        <label class="form-label">Pengirim</label>
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" placeholder="Masukkan Nama Pengirim"
+                                                name="suratjalan_pengirim" id="suratjalan_pengirim" />
+                                        </div>
                                         <label class="form-label">Driver</label>
                                         <div class="form-group">
                                             <input class="form-control" type="text" value=""
                                                 placeholder="Masukkan Driver Surat Jalan" name="suratjalan_driver"
                                                 id="suratjalan_driver" />
+                                        </div>
+                                        <label class="form-label">Plat No</label>
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" value=""
+                                                placeholder="Masukkan Plat No Pengirim" name="suratjalan_platno"
+                                                id="suratjalan_platno" />
+                                        </div>
+                                        <label class="form-label">Jenis</label>
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" value=""
+                                                placeholder="Masukkan Jenis Pengirim" name="suratjalan_jenis"
+                                                id="suratjalan_jenis" />
                                         </div>
                                     </div>
                                 </div>
@@ -111,6 +128,10 @@
                                             <input class="form-control" type="text"
                                                 placeholder="Masukkan Pengawas Lapangan" name="suratjalan_pengawaslapangan"
                                                 id="suratjalan_pengawaslapangan" />
+                                        </div>
+                                        <label class="form-label">Keterangan</label>
+                                        <div class="form-group">
+                                            <textarea name="suratjalan_ket" id="suratjalan_ket" class="form-control"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -132,6 +153,11 @@
                                             <input class="form-control" type="text" placeholder="Masukkan Jumlah Alat"
                                                 name="jml" id="jml" />
                                         </div>
+                                        {{-- <label class="form-label" id="labelplat">Plat No</label>
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" placeholder="Masukkan Plat Nomor"
+                                                name="plat" id="plat" />
+                                        </div> --}}
                                         <div class="form-group">
                                             <button class="btn btn-success" type="button"
                                                 id="tambahalat">Tambah</button>
@@ -248,12 +274,27 @@
                 $('#suratjalanForm').trigger("reset");
                 $('#suratjalanHeading').html("TAMBAH DATA SURAT JALAN BARU");
                 $('#suratjalanModal').modal('show');
+                $('#proyek_id').val('-').attr('disabled', false);
+                $('#suratjalan_edit').val('edit').attr('disabled', false);
+                $('#suratjalan_tgl').val('').attr('disabled', false);
+                $('#suratjalan_pengirim').val('').attr('disabled', false);
+                $('#suratjalan_driver').val('').attr('disabled', false);
+                $('#suratjalan_pengawaslapangan').val('').attr('disabled', false);
+                $('#suratjalan_platno').val('').attr('disabled', false);
+                $('#suratjalan_jenis').val('').attr('disabled', false);
+                $('#suratjalan_ket').val('').attr('disabled', false);
                 $("#alat").attr('hidden', false);
                 $("#jml").attr('hidden', false);
+                // $("#plat").attr('hidden', false);
                 $("#labelalat").attr('hidden', false);
                 $("#labeljml").attr('hidden', false);
+                // $("#labelplat").attr('hidden', false);
                 $("#tambahalat").attr('hidden', false);
                 $("#submitAlat").attr('hidden', false);
+
+                // Append the new row to the tables
+                $("#daftaralat").html('');
+                $("#jumlah").attr('data-jumlah', 0).html('0');
             });
 
             $('#submitAlat').click(function(e) {
@@ -331,25 +372,55 @@
                         $('#suratjalan_edit').val('edit').attr('disabled', false);
                         $('#suratjalan_tgl').val(response.suratjalan_tgl).attr('disabled', false);
                         $('#suratjalan_driver').val(response.suratjalan_driver).attr('disabled', false);
+                        $('#suratjalan_pengirim').val(response.suratjalan_pengirim).attr('disabled', false);
                         $('#suratjalan_pengawaslapangan').val(response.suratjalan_pengawaslapangan).attr('disabled', false);
+                        $('#suratjalan_platno').val(response.suratjalan_platno).attr('disabled', false);
+                        $('#suratjalan_jenis').val(response.suratjalan_jenis).attr('disabled', false);
+                        $('#suratjalan_ket').val(response.suratjalan_ket).attr('disabled', false);
                         $("#alat").attr('hidden', false);
                         $("#jml").attr('hidden', false);
+                        // $("#plat").attr('hidden', false);
                         $("#labelalat").attr('hidden', false);
                         $("#labeljml").attr('hidden', false);
+                        // $("#labelplat").attr('hidden', false);
                         $("#tambahalat").attr('hidden', false);
                         $("#submitAlat").attr('hidden', false);
 
                         $.each(response.detailsurat, function(index, value) {
 
-                            const newRowId  = `row_${index}`;
-                            const alat_nama = value['alat']['alat_nama']
-                            const alat_id   = value['alat']['alat_id']
-                            const alat_jml  = value['alat_jml']
+                            const newRowId      = `row_${index}`;
+                            const alat_nama     = value['alat']['alat_nama']
+                            const alat_id       = value['alat']['alat_id']
+                            const alat_jml      = value['alat_jml']
+                            const alat_jenis    = value['alat_jenis']
+                            const alat_platno   = value['alat_platno']
 
                             const newRow = `<tr id="${newRowId}">
                                     <td>
                                         <input class="text-center form-control alat_id" value="${alat_id}" type="hidden" name="alat_id[]" placeholder="Masukkan Pax">
                                         ${alat_nama.toUpperCase()}
+                                    </td>
+                                    <td>
+                                        <input class="text-center form-control alat_jml" value="${alat_jml}" type="hidden" name="alat_jml[]" placeholder="Masukkan Pax">
+                                        ${alat_jml}
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger removeRowBtn" data-row-id="${newRowId}"><span class="material-icons">delete</span></i></button>
+                                    </td>
+                                </tr>`;
+
+                            const newRow2 = `<tr id="${newRowId}">
+                                    <td>
+                                        <input class="text-center form-control alat_id" value="${alat_id}" type="hidden" name="alat_id[]" placeholder="Masukkan Pax">
+                                        ${alat_nama.toUpperCase()}
+                                    </td>
+                                    <td>
+                                        <input class="text-center form-control alat_platno" value="${alat_platno}" type="hidden" name="alat_platno[]" placeholder="Masukkan Pax">
+                                        ${alat_platno}
+                                    </td>
+                                    <td>
+                                        <input class="text-center form-control alat_jenis" value="${alat_jenis}" type="hidden" name="alat_jenis[]" placeholder="Masukkan Pax">
+                                        ${alat_jenis.toUpperCase()}
                                     </td>
                                     <td>
                                         <input class="text-center form-control alat_jml" value="${alat_jml}" type="hidden" name="alat_jml[]" placeholder="Masukkan Pax">
@@ -380,10 +451,11 @@
 
                 lastRowIndex++; // Increment the last index for the new row
 
-                var alat = $("#alat").val();
-                var jml = $("#jml").val();
+                var alat    = $("#alat").val();
+                var jml     = $("#jml").val();
+                var plat    = $("#plat").val();
 
-                if (alat === null && jml === null) {
+                if (alat === null && jml === null && plat === null) {
                     const Toast = Swal.mixin({
                         toast: true,
                         position: 'top-end',
@@ -394,7 +466,7 @@
 
                     Toast.fire({
                         icon: 'error',
-                        title: `Alat dan Jumlah Wajib di Isi!`,
+                        title: `Alat dan Jumlah serta Jenis Wajib di Isi!`,
                     });
 
                     return;
@@ -437,8 +509,9 @@
 
                                 $("#jumlah").attr('data-jumlah', newjumlah).html(newjumlah);
 
-                                var alat = $("#alat").val('-');
-                                var jml = $("#jml").val('');
+                                $("#alat").val('-');
+                                $("#jml").val('');
+                                $("#plat").val('');
 
                             } else if (response.success === 'null') {
                                 console.log(
@@ -505,7 +578,7 @@
                 jumlahElement.attr('data-jumlah', newJumlah).html(newJumlah);
             });
 
-            // Edit Data User
+            // Show Data User
             $('body').on('click', '#suratjalan-show', function() {
                 var suratjalan_id = $(this).attr('data-id');
                 $("#daftaralat").html('');
@@ -528,7 +601,11 @@
                         $('#suratjalan_edit').val('show').attr('disabled', true);
                         $('#suratjalan_tgl').val(response.suratjalan_tgl).attr('disabled', true);
                         $('#suratjalan_driver').val(response.suratjalan_driver).attr('disabled', true);
+                        $('#suratjalan_pengirim').val(response.suratjalan_pengirim).attr('disabled', true);
                         $('#suratjalan_pengawaslapangan').val(response.suratjalan_pengawaslapangan).attr('disabled', true);
+                        $('#suratjalan_platno').val(response.suratjalan_platno).attr('disabled', true);
+                        $('#suratjalan_jenis').val(response.suratjalan_jenis).attr('disabled', true);
+                        $('#suratjalan_ket').val(response.suratjalan_ket).attr('disabled', true);
                         $("#alat").attr('hidden', true);
                         $("#jml").attr('hidden', true);
                         $("#labelalat").attr('hidden', true);
@@ -538,10 +615,12 @@
 
                         $.each(response.detailsurat, function(index, value) {
 
-                            const newRowId  = `row_${index}`;
-                            const alat_nama = value['alat']['alat_nama']
-                            const alat_id   = value['alat']['alat_id']
-                            const alat_jml  = value['alat_jml']
+                            const newRowId      = `row_${index}`;
+                            const alat_nama     = value['alat']['alat_nama']
+                            const alat_id       = value['alat']['alat_id']
+                            const alat_jml      = value['alat_jml']
+                            const alat_jenis    = value['alat_jenis']
+                            const alat_platno   = value['alat_platno']
 
                             const newRow = `<tr id="${newRowId}">
                                     <td>
