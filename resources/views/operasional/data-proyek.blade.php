@@ -95,6 +95,20 @@
                                 </div>
                                 <div class="row gx-3">
                                     <div class="col-sm-12">
+                                        <label class="form-label">Tanggal Mulai Proyek</label>
+                                        <div class="form-group">
+                                            <input class="form-control" type="date" placeholder="Masukkan Tanggal Mulai Proyek"
+                                                name="proyek_tglMulai" id="proyek_tglMulai" />
+                                        </div>
+                                        <label class="form-label">Tanggal Akhir Proyek</label>
+                                        <div class="form-group">
+                                            <input class="form-control" type="date" placeholder="Masukkan Tanggal Akhir Proyek"
+                                                name="proyek_tglAkhir" id="proyek_tglAkhir" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row gx-3">
+                                    <div class="col-sm-12">
                                         <label class="form-label">Lokasi</label>
                                         <div class="form-group">
                                             <input class="form-control" type="text" placeholder="Masukkan Lokasi Proyek"
@@ -266,6 +280,8 @@
                         $('#proyek_id').val(response.proyek_id);
                         $('#proyek_nama').val(response.proyek_nama);
                         $('#proyek_pelaksana').val(response.proyek_pelaksana);
+                        $('#proyek_tglMulai').val(response.proyek_tglMulai);
+                        $('#proyek_tglAkhir').val(response.proyek_tglAkhir);
                         $('#proyek_lokasi').val(response.proyek_lokasi);
                         $('#proyek_pic').val(response.proyek_pic);
                     }

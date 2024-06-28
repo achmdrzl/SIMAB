@@ -18,6 +18,8 @@ class Proyek extends Model
         'proyek_nama',
         'proyek_pelaksana',
         'proyek_lokasi',
+        'proyek_tglMulai',
+        'proyek_tglAkhir',
         'proyek_pic',
         'fk_user',
         'status'

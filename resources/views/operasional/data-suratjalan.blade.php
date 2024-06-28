@@ -28,13 +28,16 @@
                                         <h6>List Data Surat Jalan
                                             <span class="badge badge-sm badge-light ms-1">{{ count($suratjalans) }}</span>
                                         </h6>
-                                        <div class="card-action-wrap">
-                                            <button class="btn btn-sm btn-primary ms-3" id="suratjalan-create"><span><span
-                                                        class="icon"><span class="feather-icon"><i
-                                                                data-feather="plus"></i></span></span><span
-                                                        class="btn-text">Tambah
-                                                        Surat Jalan</span></span></button>
-                                        </div>
+                                        @if (Auth::user()->role === 'admin')
+                                            <div class="card-action-wrap">
+                                                <button class="btn btn-sm btn-primary ms-3"
+                                                    id="suratjalan-create"><span><span class="icon"><span
+                                                                class="feather-icon"><i
+                                                                    data-feather="plus"></i></span></span><span
+                                                            class="btn-text">Tambah
+                                                            Surat Jalan</span></span></button>
+                                            </div>
+                                        @endif
                                     </div>
                                     <div class="card-body">
                                         <div class="contact-list-view">
@@ -126,8 +129,8 @@
                                         <label class="form-label">Pengawas Lapangan</label>
                                         <div class="form-group">
                                             <input class="form-control" type="text"
-                                                placeholder="Masukkan Pengawas Lapangan" name="suratjalan_pengawaslapangan"
-                                                id="suratjalan_pengawaslapangan" />
+                                                placeholder="Masukkan Pengawas Lapangan"
+                                                name="suratjalan_pengawaslapangan" id="suratjalan_pengawaslapangan" />
                                         </div>
                                         <label class="form-label">Keterangan</label>
                                         <div class="form-group">
@@ -194,7 +197,7 @@
                     </div>
                 </div>
             </div>
-        
+
         </div>
 
         <!-- Page Footer -->
@@ -370,13 +373,20 @@
                         $('#suratjalan_id').val(response.suratjalan_id);
                         $('#proyek_id').val(response.proyek_id).attr('disabled', false);
                         $('#suratjalan_edit').val('edit').attr('disabled', false);
-                        $('#suratjalan_tgl').val(response.suratjalan_tgl).attr('disabled', false);
-                        $('#suratjalan_driver').val(response.suratjalan_driver).attr('disabled', false);
-                        $('#suratjalan_pengirim').val(response.suratjalan_pengirim).attr('disabled', false);
-                        $('#suratjalan_pengawaslapangan').val(response.suratjalan_pengawaslapangan).attr('disabled', false);
-                        $('#suratjalan_platno').val(response.suratjalan_platno).attr('disabled', false);
-                        $('#suratjalan_jenis').val(response.suratjalan_jenis).attr('disabled', false);
-                        $('#suratjalan_ket').val(response.suratjalan_ket).attr('disabled', false);
+                        $('#suratjalan_tgl').val(response.suratjalan_tgl).attr('disabled',
+                            false);
+                        $('#suratjalan_driver').val(response.suratjalan_driver).attr('disabled',
+                            false);
+                        $('#suratjalan_pengirim').val(response.suratjalan_pengirim).attr(
+                            'disabled', false);
+                        $('#suratjalan_pengawaslapangan').val(response
+                            .suratjalan_pengawaslapangan).attr('disabled', false);
+                        $('#suratjalan_platno').val(response.suratjalan_platno).attr('disabled',
+                            false);
+                        $('#suratjalan_jenis').val(response.suratjalan_jenis).attr('disabled',
+                            false);
+                        $('#suratjalan_ket').val(response.suratjalan_ket).attr('disabled',
+                            false);
                         $("#alat").attr('hidden', false);
                         $("#jml").attr('hidden', false);
                         // $("#plat").attr('hidden', false);
@@ -388,12 +398,12 @@
 
                         $.each(response.detailsurat, function(index, value) {
 
-                            const newRowId      = `row_${index}`;
-                            const alat_nama     = value['alat']['alat_nama']
-                            const alat_id       = value['alat']['alat_id']
-                            const alat_jml      = value['alat_jml']
-                            const alat_jenis    = value['alat_jenis']
-                            const alat_platno   = value['alat_platno']
+                            const newRowId = `row_${index}`;
+                            const alat_nama = value['alat']['alat_nama']
+                            const alat_id = value['alat']['alat_id']
+                            const alat_jml = value['alat_jml']
+                            const alat_jenis = value['alat_jenis']
+                            const alat_platno = value['alat_platno']
 
                             const newRow = `<tr id="${newRowId}">
                                     <td>
@@ -434,7 +444,7 @@
                             // Append the new row to the tables
                             $("#daftaralat").append(newRow);
 
-                            
+
                         });
 
                         var newjumlah = parseInt(response.suratjalan_jmlalat);
@@ -451,9 +461,9 @@
 
                 lastRowIndex++; // Increment the last index for the new row
 
-                var alat    = $("#alat").val();
-                var jml     = $("#jml").val();
-                var plat    = $("#plat").val();
+                var alat = $("#alat").val();
+                var jml = $("#jml").val();
+                var plat = $("#plat").val();
 
                 if (alat === null && jml === null && plat === null) {
                     const Toast = Swal.mixin({
@@ -599,13 +609,20 @@
                         $('#suratjalan_id').val(response.suratjalan_id);
                         $('#proyek_id').val(response.proyek_id).attr('disabled', true);
                         $('#suratjalan_edit').val('show').attr('disabled', true);
-                        $('#suratjalan_tgl').val(response.suratjalan_tgl).attr('disabled', true);
-                        $('#suratjalan_driver').val(response.suratjalan_driver).attr('disabled', true);
-                        $('#suratjalan_pengirim').val(response.suratjalan_pengirim).attr('disabled', true);
-                        $('#suratjalan_pengawaslapangan').val(response.suratjalan_pengawaslapangan).attr('disabled', true);
-                        $('#suratjalan_platno').val(response.suratjalan_platno).attr('disabled', true);
-                        $('#suratjalan_jenis').val(response.suratjalan_jenis).attr('disabled', true);
-                        $('#suratjalan_ket').val(response.suratjalan_ket).attr('disabled', true);
+                        $('#suratjalan_tgl').val(response.suratjalan_tgl).attr('disabled',
+                        true);
+                        $('#suratjalan_driver').val(response.suratjalan_driver).attr('disabled',
+                            true);
+                        $('#suratjalan_pengirim').val(response.suratjalan_pengirim).attr(
+                            'disabled', true);
+                        $('#suratjalan_pengawaslapangan').val(response
+                            .suratjalan_pengawaslapangan).attr('disabled', true);
+                        $('#suratjalan_platno').val(response.suratjalan_platno).attr('disabled',
+                            true);
+                        $('#suratjalan_jenis').val(response.suratjalan_jenis).attr('disabled',
+                            true);
+                        $('#suratjalan_ket').val(response.suratjalan_ket).attr('disabled',
+                        true);
                         $("#alat").attr('hidden', true);
                         $("#jml").attr('hidden', true);
                         $("#labelalat").attr('hidden', true);
@@ -615,12 +632,12 @@
 
                         $.each(response.detailsurat, function(index, value) {
 
-                            const newRowId      = `row_${index}`;
-                            const alat_nama     = value['alat']['alat_nama']
-                            const alat_id       = value['alat']['alat_id']
-                            const alat_jml      = value['alat_jml']
-                            const alat_jenis    = value['alat_jenis']
-                            const alat_platno   = value['alat_platno']
+                            const newRowId = `row_${index}`;
+                            const alat_nama = value['alat']['alat_nama']
+                            const alat_id = value['alat']['alat_id']
+                            const alat_jml = value['alat_jml']
+                            const alat_jenis = value['alat_jenis']
+                            const alat_platno = value['alat_platno']
 
                             const newRow = `<tr id="${newRowId}">
                                     <td>
@@ -637,7 +654,7 @@
                                 </tr>`;
 
                             // Append the new row to the tables
-                            $("#daftaralat").append(newRow); 
+                            $("#daftaralat").append(newRow);
                         });
 
                         var newjumlah = parseInt(response.suratjalan_jmlalat);
@@ -705,7 +722,7 @@
             });
 
             // CETAK LAPORAN
-            $('body').on('click', '#suratjalan-cetak', function(){
+            $('body').on('click', '#suratjalan-cetak', function() {
 
                 const swalWithBootstrapButtons = Swal.mixin({
                     customClass: {
@@ -747,7 +764,7 @@
                         } else {
                             Swal.fire("Cancel!", "Perintah dibatalkan!", "error");
                         }
-                    });                
+                    });
             })
 
         })

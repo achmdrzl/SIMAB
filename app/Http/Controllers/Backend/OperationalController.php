@@ -72,16 +72,23 @@ class OperationalController extends Controller
     // PROYEK STORED DATA
     public function proyekStore(Request $request)
     {
-        //define validation rules
+        // Define validation rules and custom error messages
         $validator = Validator::make($request->all(), [
             'proyek_nama'       => 'required',
             'proyek_pelaksana'  => 'required',
             'proyek_lokasi'     => 'required',
-            'proyek_pic'    => 'required',
+            'proyek_tglMulai'   => 'required|date',
+            'proyek_tglAkhir'   => 'required|date|after_or_equal:proyek_tglMulai',
+            'proyek_pic'        => 'required',
         ], [
             'proyek_nama.required'          => 'Nama Proyek Harus di Isi!',
             'proyek_pelaksana.required'     => 'Pelaksana Proyek Harus di Isi!',
             'proyek_lokasi.required'        => 'Lokasi Proyek Harus di Isi!',
+            'proyek_tglMulai.required'      => 'Tanggal Mulai Proyek Harus di Isi!',
+            'proyek_tglMulai.date'          => 'Tanggal Mulai Proyek Harus dalam Format Tanggal yang Valid!',
+            'proyek_tglAkhir.required'      => 'Tanggal Akhir Proyek Harus di Isi!',
+            'proyek_tglAkhir.date'          => 'Tanggal Akhir Proyek Harus dalam Format Tanggal yang Valid!',
+            'proyek_tglAkhir.after_or_equal'=> 'Tanggal Akhir Proyek Harus Setelah atau Sama dengan Tanggal Mulai Proyek!',
             'proyek_pic.required'           => 'PIC Proyek Harus di Isi!',
         ]);
 
@@ -97,6 +104,8 @@ class OperationalController extends Controller
             'proyek_nama'       => $request->proyek_nama,
             'proyek_pelaksana'  => $request->proyek_pelaksana,
             'proyek_lokasi'     => $request->proyek_lokasi,
+            'proyek_tglMulai'   => $request->proyek_tglMulai,
+            'proyek_tglAkhir'   => $request->proyek_tglAkhir,
             'proyek_pic'        => $request->proyek_pic,
             'fk_user'           => Auth::user()->user_id,
         ]);

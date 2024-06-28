@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('proyek_nama');
             $table->string('proyek_pelaksana');
             $table->string('proyek_lokasi');
+            $table->date('proyek_tglMulai');
+            $table->date('proyek_tglAkhir');
             $table->string('proyek_pic');
             $table->string('fk_user');
             $table->enum('status', ['selesai', 'on-progress'])->default('on-progress');
