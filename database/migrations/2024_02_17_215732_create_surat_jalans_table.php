@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('surat_jalans', function (Blueprint $table) {
             $table->id('suratjalan_id');
-            $table->integer('proyek_id')->nullable();
+            $table->bigInteger('proyek_id')->unsigned()->nullable();
+            $table->foreign('proyek_id')->references('proyek_id')->on('proyeks')->onDelete('cascade');
             $table->date('suratjalan_tgl');
             $table->string('suratjalan_driver');
             $table->string('suratjalan_pengirim');

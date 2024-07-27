@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Alat;
+use App\Models\ControlAlat;
 use App\Models\Proyek;
 use App\Models\SuratJalan;
 use App\Models\SuratJalanDetail;
@@ -52,7 +53,7 @@ class OperationalController extends Controller
                         $icon = 'visibility_off';
                     } else {
                         $class = 'success';
-                        $icon = 'visibility';
+                        $icon = 'done';
                     }
 
                     $btn = '<button class="btn btn-icon btn-primary btn-rounded flush-soft-hover me-1" title="EDIT DATA PROYEK" id="proyek-edit" data-id="' . $item->proyek_id . '"><span class="material-icons btn-sm">edit</span></button>';
@@ -120,7 +121,12 @@ class OperationalController extends Controller
     // PROYEK EDIT DATA
     public function proyekEdit(Request $request)
     {
-        $proyek = Proyek::where('proyek_id', $request->proyek_id)->first();
+        $proyek = Proyek::with(['surat.detailsurat.alat'])->where('proyek_id', $request->proyek_id)->first();
+        
+        if (!$proyek) {
+            return response()->json(['message' => 'Proyek not found'], 404);
+        }
+        
         return response()->json($proyek);
     }
 
@@ -250,7 +256,7 @@ class OperationalController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()->all()]);
         }
-
+        
         // insert data to table surat jalan 
         $suratjalan = SuratJalan::updateOrCreate([
             'suratjalan_id' => $request->suratjalan_id
@@ -293,9 +299,9 @@ class OperationalController extends Controller
 
             // Decrement alat_jml
             if ($alat) {
-                if(!$request->suratjalan_edit == 'edit'){
-                    $alat->decrement('alat_jml', $request->alat_jml[$i] ?? 0);
-                }
+                $alat->decrement('alat_jml', $request->alat_jml[$i] ?? 0);
+                // if(!$request->suratjalan_edit == 'edit'){
+                // }
             }
 
             // Collect alat_id values to update
@@ -447,7 +453,7 @@ class OperationalController extends Controller
 
                     $btn = '<button class="btn btn-icon btn-primary btn-rounded flush-soft-hover me-1" id="suratjalan-show" title="SHOW DATA SURAT JALAN" data-id="' . $item->suratjalan_id . '"><span class="material-icons btn-sm">visibility</span></button>';
 
-                    $btn = $btn . '<button class="btn btn-icon btn-danger btn-rounded flush-soft-hover me-1" title="UPDATE STATUS SURAT JALAN" id="suratjalan-delete" data-id="' . $item->suratjalan_id . '"><span class="material-icons btn-sm">visibility_off</span></button>';
+                    $btn = $btn . '<button class="btn btn-icon btn-success btn-rounded flush-soft-hover me-1" title="UPDATE STATUS SURAT JALAN" id="suratjalan-delete" data-id="' . $item->suratjalan_id . '"><span class="material-icons btn-sm">done</span></button>';
 
                     return $btn;
                 })
@@ -462,13 +468,30 @@ class OperationalController extends Controller
     {
         $suratjalan = SuratJalan::with(['proyek', 'detailsurat.alat'])->where('suratjalan_id', $request->suratjalan_id)->first();
 
-        // Assuming $suratjalan is not null and detailsurat relationship is loaded
-        foreach ($suratjalan->detailsurat as $detail) {
-            $alat = Alat::find($detail->alat_id);
+        // find alat id
+        foreach ($request->alat_id as $index => $data) {
+            $alat = Alat::find($data);
 
-            if ($alat) {
-                // Update alat_jml based on your logic
-                $alat->increment('alat_jml', $detail->alat_jml);
+            if ($request->alat_kondisi_tidak_baik[$index] != 0) {
+                // Check if the record exists in ControlAlat
+                $controlAlat = ControlAlat::where('alat_id', $request->alat_id[$index])->first();
+
+                if ($controlAlat) {
+                    // If exists, increment the alat_jml with new data
+                    $controlAlat->increment('alat_jml', $request->alat_kondisi_tidak_baik[$index]);
+                } else {
+                    // If not exists, create a new record
+                    ControlAlat::create([
+                        'alat_id' => $request->alat_id[$index],
+                        'alat_jml' => $request->alat_kondisi_tidak_baik[$index],
+                        'alat_kondisi' => 'tidak baik'
+                    ]);
+                }
+            } else {
+                if ($alat) {
+                    // Update alat_jml based on your logic
+                    $alat->increment('alat_jml', $request->alat_kondisi_baik[$index]);
+                }
             }
         }
 

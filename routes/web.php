@@ -49,6 +49,11 @@ Route::group(['middleware' => ['role:admin|pimpinan|pengawas-lapangan', 'auth']]
     Route::post('/alatEdit', MasterDataController::class . '@alatEdit')->name('alat.edit');
     Route::post('/alatDestroy', MasterDataController::class . '@alatDestroy')->name('alat.destroy');
 
+    // MASTER ALAT REKONSILIASI
+    Route::get('/control-alat', MasterDataController::class . '@controlAlatIndex')->name('controlalat.index');
+    Route::post('/control-alatStore', MasterDataController::class . '@controlAlatStore')->name('controlalat.store');
+    Route::post('/control-alatEdit', MasterDataController::class . '@controlAlatEdit')->name('controlalat.edit');
+
     // OPERATIONAL PROYEK
     Route::get('/proyek', OperationalController::class . '@proyekIndex')->name('proyek.index');
     Route::post('/proyekStore', OperationalController::class . '@proyekStore')->name('proyek.store');

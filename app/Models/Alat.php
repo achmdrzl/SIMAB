@@ -28,4 +28,10 @@ class Alat extends Model
     {
         return $this->hasOne(SuratJalanDetail::class, 'alat_id');
     }
+
+    public function controlalat()
+    {
+        return $this->hasOne(ControlAlat::class, 'alat_id');
+    }
+    
 }

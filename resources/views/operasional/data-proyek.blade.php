@@ -97,13 +97,15 @@
                                     <div class="col-sm-12">
                                         <label class="form-label">Tanggal Mulai Proyek</label>
                                         <div class="form-group">
-                                            <input class="form-control" type="date" placeholder="Masukkan Tanggal Mulai Proyek"
-                                                name="proyek_tglMulai" id="proyek_tglMulai" />
+                                            <input class="form-control" type="date"
+                                                placeholder="Masukkan Tanggal Mulai Proyek" name="proyek_tglMulai"
+                                                id="proyek_tglMulai" />
                                         </div>
                                         <label class="form-label">Tanggal Akhir Proyek</label>
                                         <div class="form-group">
-                                            <input class="form-control" type="date" placeholder="Masukkan Tanggal Akhir Proyek"
-                                                name="proyek_tglAkhir" id="proyek_tglAkhir" />
+                                            <input class="form-control" type="date"
+                                                placeholder="Masukkan Tanggal Akhir Proyek" name="proyek_tglAkhir"
+                                                id="proyek_tglAkhir" />
                                         </div>
                                     </div>
                                 </div>
@@ -118,6 +120,16 @@
                                         <div class="form-group">
                                             <input class="form-control" type="text" value=""
                                                 placeholder="Masukkan PIC Proyek" name="proyek_pic" id="proyek_pic" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row gx-3">
+                                    <h6>Daftar Surat Jalan</h6>
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-md-12" id="suratJalanData">
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -272,7 +284,7 @@
                     },
                     dataType: "json",
                     success: function(response) {
-                        console.log(response)
+                        console.log(response);
                         $('#submitBtnUser').val("alat-edit");
                         $('#proyekForm').trigger("reset");
                         $('#proyekHeading').html("EDIT DATA PROYEK");
@@ -284,9 +296,134 @@
                         $('#proyek_tglAkhir').val(response.proyek_tglAkhir);
                         $('#proyek_lokasi').val(response.proyek_lokasi);
                         $('#proyek_pic').val(response.proyek_pic);
+
+                        var html = 'data surat jalan tidak ada!';
+                        if(response.surat && response.surat.length > 0){
+                            html = ''; // Reset html if there are surat jalan data
+                            // foreach surat jalan
+                            $.each(response.surat, function (index, value) { 
+                                var tglsuratjalan     = value['suratjalan_tgl'] ?? '-';
+                                var driver            = value['suratjalan_driver'] ?? '-';
+                                var platnokendaraan   = value['suratjalan_platno'] ?? '-';
+                                var keterangan        = value['suratjalan_keterangan'] ?? '-';
+                                var pengirim          = value['suratjalan_pengirim'] ?? '-';
+                                var pengawaslapangan  = value['suratjalan_pengawaslapangan'] ?? '-';
+
+                                html += `<div class="table-responsive mb-2">
+                                            <h6>Surat Jalan `+ (index + 1) +`</h6>
+                                            <table>
+                                                <tr>
+                                                    <td style="width: 200px; vertical-align: top;">
+                                                        <p class="card-text me-4" style="font-weight: bold">
+                                                            Tanggal Surat Jalan
+                                                        </p>
+                                                    </td>
+                                                    <td style="vertical-align: top;">:</td>
+                                                    <td style="width: calc(100% - 250px); vertical-align: bottom;">
+                                                        <p class="card-text" style="word-wrap: break-word;">
+                                                            `+ tglsuratjalan +`
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 200px; vertical-align: top;">
+                                                        <p class="card-text me-4" style="font-weight: bold">
+                                                            Driver
+                                                        </p>
+                                                    </td>
+                                                    <td style="vertical-align: top;">:</td>
+                                                    <td style="width: calc(100% - 250px); vertical-align: bottom;">
+                                                        <p class="card-text" style="word-wrap: break-word;">
+                                                            `+ driver +`
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 200px; vertical-align: top;">
+                                                        <p class="card-text me-4" style="font-weight: bold">
+                                                            Plat No Kendaraan
+                                                        </p>
+                                                    </td>
+                                                    <td style="vertical-align: top;">:</td>
+                                                    <td style="width: calc(100% - 250px); vertical-align: bottom;">
+                                                        <p class="card-text" style="word-wrap: break-word;">
+                                                            `+ platnokendaraan +`
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 200px; vertical-align: top;">
+                                                        <p class="card-text me-4" style="font-weight: bold">
+                                                            Pengirim
+                                                        </p>
+                                                    </td>
+                                                    <td style="vertical-align: top;">:</td>
+                                                    <td style="width: calc(100% - 250px); vertical-align: bottom;">
+                                                        <p class="card-text" style="word-wrap: break-word;">
+                                                            `+ pengirim +`
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 200px; vertical-align: top;">
+                                                        <p class="card-text me-4" style="font-weight: bold">
+                                                            Pengawas Lapangan
+                                                        </p>
+                                                    </td>
+                                                    <td style="vertical-align: top;">:</td>
+                                                    <td style="width: calc(100% - 250px); vertical-align: bottom;">
+                                                        <p class="card-text" style="word-wrap: break-word;">
+                                                            `+ pengawaslapangan +`
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 200px; vertical-align: top;">
+                                                        <p class="card-text me-4" style="font-weight: bold">
+                                                            Keterangan
+                                                        </p>
+                                                    </td>
+                                                    <td style="vertical-align: top;">:</td>
+                                                    <td style="width: calc(100% - 250px); vertical-align: bottom;">
+                                                        <p class="card-text" style="word-wrap: break-word;">
+                                                            `+ keterangan +`
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            </table>`;
+
+                                if (value.detailsurat && value.detailsurat.length > 0) {
+                                    html += `<h6>Detail Surat Jalan</h6>
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Alat Nama</th>
+                                                        <th>Alat Jumlah</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>`;
+                                    $.each(value.detailsurat, function (dIndex, dValue) {
+                                        var alatNama = dValue.alat ? dValue.alat.alat_nama : '-';
+                                        var alatJumlah = dValue.alat_jml ?? '-';
+
+                                        html += `<tr>
+                                                    <td>` + alatNama + `</td>
+                                                    <td>` + alatJumlah + `</td>
+                                                </tr>`;
+                                    });
+                                    html += `</tbody>
+                                        </table>`;
+                                }
+
+                                html += `</div>`;
+                            });
+                        }
+
+                        $("#suratJalanData").html(html);
                     }
                 });
             });
+
 
             // Arsipkan Data User
             $('body').on('click', '#proyek-delete', function() {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Alat;
+use App\Models\ControlAlat;
 use App\Models\Proyek;
 use App\Models\SuratJalan;
 use Illuminate\Support\Str;
@@ -271,5 +272,87 @@ class MasterDataController extends Controller
         }
 
         return response()->json(['status' => 'Data Saved Successfully!']);
+    }
+
+
+    // INDEX CONTROL ALAT
+    public function controlAlatIndex(Request $request)
+    {
+        $alats   = ControlAlat::with(['alat'])->where('alat_jml', '!=', 0)->get();
+        if ($request->ajax()) {
+            $alats      = ControlAlat::with(['alat'])->where('alat_jml', '!=', 0)->get();
+            return DataTables::of($alats)
+                ->addIndexColumn()
+                ->addColumn('alat_nama', function ($item) {
+                    return ucfirst($item->alat->alat_nama);
+                })
+                ->addColumn('alat_kondisi', function ($item) {
+                    return ucwords($item->alat_kondisi);
+                })
+                ->addColumn('alat_jumlah', function ($item) {
+                    return $item->alat_jml . 'bh';
+                })
+                ->addColumn('action', function ($item) {
+
+                    if ($item->status == 'aktif') {
+                        $class = 'danger';
+                        $icon = 'visibility_off';
+                    } else {
+                        $class = 'success';
+                        $icon = 'visibility';
+                    }
+
+                    $btn = '<button class="btn btn-icon btn-primary btn-rounded flush-soft-hover me-1" id="alat-edit" data-id="' . $item->alat_id . '"><span class="material-icons btn-sm">edit</span></button>';
+
+                    return $btn;
+                })
+                ->rawColumns(['status', 'action'])
+                ->make(true);
+        }
+        return view('masterdata.control-alat', compact('alats'));
+    }
+
+    // ALAT STORED DATA
+    public function controlAlatStore(Request $request)
+    {
+        
+        //define validation rules
+        $validator = Validator::make($request->all(), [
+            'alat_jml_baik'      => 'required',
+        ], [
+            'alat_jml_baik.required'         => 'Jumlah Alat Harus di Isi!',
+        ]);
+
+        //check if validation fails
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()->all()]);
+        }
+
+        $controlAlat = ControlAlat::where('alat_id', $request->alat_id)->first();
+
+        if ($controlAlat) {
+            // Update alat_jml based on your logic
+            $controlAlat->decrement('alat_jml', $request->alat_jml_baik);
+        }
+
+        $alat = Alat::find($request->alat_id);
+
+        if ($alat) {
+            // Update alat_jml based on your logic
+            $alat->increment('alat_jml', $request->alat_jml_baik);
+        }
+
+        //return response
+        return response()->json([
+            'success' => true,
+            'message' => 'Your data has been saved successfully!',
+        ]);
+    }
+
+    // ALAT EDIT DATA
+    public function controlAlatEdit(Request $request)
+    {
+        $alat = ControlAlat::with(['alat'])->where('alat_id', $request->alat_id)->first();
+        return response()->json($alat);
     }
 }

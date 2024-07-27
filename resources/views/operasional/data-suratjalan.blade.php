@@ -347,6 +347,11 @@
                             $("#jumlah").attr('data-jumlah', 0).html('0');
 
                             datatable.draw();
+
+                            // Set a timeout before reloading the window
+                            setTimeout(function() {
+                                window.location.reload();
+                            }, 2000); // 2000 milliseconds = 2 seconds
                         }
                     }
                 });

@@ -31,6 +31,10 @@
                                         <a class="nav-link" href="{{ route('alat.index') }}"><span
                                                 class="nav-link-text">Alat</span></a>
                                     </li>
+                                    <li class="nav-item {{ request()->segment(1) == 'control-alat' ? 'active' : '' }}">
+                                        <a class="nav-link" href="{{ route('controlalat.index') }}"><span
+                                                class="nav-link-text">Control Alat</span></a>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>

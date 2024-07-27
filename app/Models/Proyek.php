@@ -27,6 +27,6 @@ class Proyek extends Model
 
     public function surat()
     {
-        $this->hasMany(SuratJalan::class, 'proyek_id');
+        return $this->hasMany(SuratJalan::class, 'proyek_id');
     }
 }
