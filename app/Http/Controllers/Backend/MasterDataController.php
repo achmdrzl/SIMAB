@@ -252,7 +252,7 @@ class MasterDataController extends Controller
     // ALAT EDIT DATA
     public function alatEdit(Request $request)
     {
-        $alat = Alat::where('alat_id', $request->alat_id)->first();
+        $alat = Alat::with(['suratdetail.surat.proyek'])->where('alat_id', $request->alat_id)->first();
         return response()->json($alat);
     }
 

@@ -26,7 +26,7 @@ class Alat extends Model
 
     public function suratdetail()
     {
-        return $this->hasOne(SuratJalanDetail::class, 'alat_id');
+        return $this->hasMany(SuratJalanDetail::class, 'alat_id');
     }
 
     public function controlalat()

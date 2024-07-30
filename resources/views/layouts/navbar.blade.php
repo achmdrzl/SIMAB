@@ -87,6 +87,10 @@
                                         <a class="nav-link" href="{{ route('laporan.pengembalian') }}"><span
                                                 class="nav-link-text">Laporan Pengembalian</span></a>
                                     </li>
+                                    <li class="nav-item {{ request()->segment(1) == 'monitoringAlat' ? 'active' : '' }}">
+                                        <a class="nav-link" href="{{ route('monitoring.alat') }}"><span
+                                                class="nav-link-text">Monitoring Alat</span></a>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>

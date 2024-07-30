@@ -73,6 +73,7 @@ Route::group(['middleware' => ['role:admin|pimpinan|pengawas-lapangan', 'auth']]
     Route::get('/laporanSuratjalan', LaporanController::class .'@laporanSuratjalan')->name('laporan.suratjalan');
     Route::get('/laporanPengembalian', LaporanController::class .'@laporanPengembalian')->name('laporan.pengembalian');
     Route::get('/laporanProyek', LaporanController::class .'@laporanProyek')->name('laporan.proyek');
+    Route::get('/monitoringAlat', LaporanController::class .'@monitoringAlat')->name('monitoring.alat');
 
 
     Route::get('/cekRelasi', function () {

@@ -130,4 +130,46 @@ class LaporanController extends Controller
         }
         return view('laporan.data-proyek', compact('proyeks'));
     }
+
+    // MONITORING ALAT
+    public function monitoringAlat(Request $request)
+    {
+        $alats   =   Alat::with(['suratdetail.surat.proyek']);
+        if ($request->ajax()) {
+            $alats      =   Alat::all();
+            return DataTables::of($alats)
+                ->addIndexColumn()
+                ->addColumn('alat_kode', function ($item) {
+                    return ucfirst($item->alat_kode);
+                })
+                ->addColumn('alat_nama', function ($item) {
+                    return ucfirst($item->alat_nama);
+                })
+                ->addColumn('status', function ($item) {
+                    if ($item->status == 'aktif') {
+                        $status = '<div class="badge badge-success">Aktif</div>';
+                    } else {
+                        $status = '<div class="badge badge-danger">Non-Aktif</div>';
+                    }
+                    return $status;
+                })
+                ->addColumn('action', function ($item) {
+
+                    if ($item->status == 'aktif') {
+                        $class = 'danger';
+                        $icon = 'visibility_off';
+                    } else {
+                        $class = 'success';
+                        $icon = 'visibility';
+                    }
+
+                    $btn = '<button class="btn btn-icon btn-primary btn-rounded flush-soft-hover me-1" id="alat-show" data-id="' . $item->alat_id . '"><span class="material-icons btn-sm">visibility</span></button>';
+
+                    return $btn;
+                })
+                ->rawColumns(['status', 'action'])
+                ->make(true);
+        }
+        return view('laporan.data-monitoring-alat', compact('alats'));
+    }
 }
